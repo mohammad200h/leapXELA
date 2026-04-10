@@ -26,13 +26,42 @@ from mujoco import mjx
 from mujoco_playground._src import mjx_env
 from mujoco_playground._src.manipulation.leapXELA import leap_hand_constants as consts
 
+from leapXELA_model.simplify_model_for_mjx import (
+  generate_model_with_box_finger_tips, 
+  generate_model_with_coacd_finger_tips,
+  load_base_model)
+
 def get_scene_xml(config: config_dict.ConfigDict):
 
-  finger_tip_type = config.finger_tip_type
+  finger_tip_type = config.model_config.finger_tip_type
   CUBE_XML = consts.ROOT_PATH / "leapXELA_model" / f"scene_mjx_cube_{finger_tip_type}_mjx.xml"
   print(f"CUBE_XML: {CUBE_XML}")
   return CUBE_XML.as_posix()
 
+def generate_scene_xml(config: config_dict.ConfigDict):
+  finger_tip_type = config.model_config.finger_tip_type
+  
+  # Generate model
+  palm_euler = config.model_config.palm_euler
+  cube_friction = config.model_config.cube_friction
+  cube_scale_factor = config.model_config.cube_scale_factor
+  cube_pos = config.model_config.cube_pos
+  cube_euler = config.model_config.cube_euler
+
+  spec = load_base_model(finger_tip_type)
+  if finger_tip_type == "CoACD":
+    generate_model_with_coacd_finger_tips(spec, finger_tip_type, palm_euler, cube_friction,
+     cube_scale_factor, cube_pos, cube_euler)
+  elif finger_tip_type == "Box":
+    generate_model_with_box_finger_tips(spec, finger_tip_type, palm_euler, cube_friction,
+     cube_scale_factor, cube_pos, cube_euler)
+  else:
+    raise ValueError(f"Invalid finger tip type: {finger_tip_type}")
+
+  # path to the scene xml
+  CUBE_XML = consts.ROOT_PATH / "leapXELA_model" / f"scene_mjx_cube_{finger_tip_type}_mjx.xml"
+  print(f"CUBE_XML: {CUBE_XML}")
+  return CUBE_XML.as_posix()
 
 def get_assets() -> Dict[str, bytes]:
   assets = {}

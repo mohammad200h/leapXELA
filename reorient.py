@@ -69,10 +69,19 @@ def default_config() -> config_dict.ConfigDict:
           pert_duration_steps=[1, 100],
           pert_wait_steps=[60, 150],
       ),
+      model_config=config_dict.create(
+        palm_euler=[0, 1.57 + 0.31, -1.57],
+        cube_friction=0.3,
+        cube_scale_factor=1.1,
+        cube_pos=[0.11, 0.0, 0.1],
+        cube_euler= [0, 0, 0],
+        finger_tip_type='CoACD'
+
+      ),
       impl='jax',
       nconmax=30 * 8192,
       njmax=220,
-      finger_tip_type='CoACD'
+      
   )
 
 
