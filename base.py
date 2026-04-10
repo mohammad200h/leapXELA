@@ -94,13 +94,7 @@ class LeapHandEnv(mjx_env.MjxEnv):
     self._mj_model.vis.global_.offwidth = 3840
     self._mj_model.vis.global_.offheight = 2160
 
-    device = None
-    if hasattr(self._config, "device_rank") and self._config.device_rank is not None:
-      gpu_devices = jax.devices("gpu")
-      device = gpu_devices[self._config.device_rank]
-    self._mjx_model = mjx.put_model(
-        self._mj_model, impl=self._config.impl, device=device
-    )
+    self._mjx_model = mjx.put_model(self._mj_model)
     self._xml_path = xml_path
 
   # Sensor readings.
