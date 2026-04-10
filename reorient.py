@@ -28,7 +28,7 @@ from mujoco_playground._src import reward
 from mujoco_playground._src.manipulation.leapXELA import base as leap_hand_base
 from mujoco_playground._src.manipulation.leapXELA import leap_hand_constants as consts
 
-from mujoco_playground._src.manipulation.leapXELA.base import get_scene_xml
+from mujoco_playground._src.manipulation.leapXELA.base import generate_scene_xml
 
 
 def default_config() -> config_dict.ConfigDict:
@@ -75,7 +75,7 @@ def default_config() -> config_dict.ConfigDict:
         cube_scale_factor=1.1,
         cube_pos=[0.11, 0.0, 0.1],
         cube_euler= [0, 0, 0],
-        finger_tip_type='CoACD'
+        finger_tip_type='Box'
 
       ),
       impl='jax',
@@ -97,7 +97,7 @@ class CubeReorient(leap_hand_base.LeapHandEnv):
     # that the correct scene file is loaded.
     if config_overrides:
       config.update_from_flattened_dict(config_overrides)
-    xml_path = get_scene_xml(config)
+    xml_path = generate_scene_xml(config)
     print(f"scene_xml:: {xml_path}")
     super().__init__(
         xml_path=xml_path,

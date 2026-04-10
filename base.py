@@ -26,7 +26,7 @@ from mujoco import mjx
 from mujoco_playground._src import mjx_env
 from mujoco_playground._src.manipulation.leapXELA import leap_hand_constants as consts
 
-from leapXELA_model.simplify_model_for_mjx import (
+from .leapXELA_model.simplify_model_for_mjx import (
   generate_model_with_box_finger_tips, 
   generate_model_with_coacd_finger_tips,
   load_base_model)
